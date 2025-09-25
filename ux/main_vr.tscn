@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7yvtnipg0t1y"]
+
+[ext_resource type="PackedScene" uid="uid://dj8t6npk2rscx" path="res://xr_origin_3d.tscn" id="1_lkpba"]
+[ext_resource type="PackedScene" uid="uid://cnw2q7t326eke" path="res://mapa_principal.tscn" id="2_413jh"]
+
+[node name="MainVR" type="Node3D"]
+
+[node name="XROrigin3D" parent="." instance=ExtResource("1_lkpba")]
+
+[node name="MapaPrincipal" parent="." instance=ExtResource("2_413jh")]

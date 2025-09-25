@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cjtsrce44ywg1"
+path.s3tc="res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Normal.jpg-a5cf568153795e1daabc5e2c0d6dba13.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "4339bafab97d37c34cf3b8d705ef2566"
+}
+
+[deps]
+
+source_file="res://modelos-3d/Hospital1_Poliigon_PlasticMoldWorn_7486_Normal.jpg"
+dest_files=["res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Normal.jpg-a5cf568153795e1daabc5e2c0d6dba13.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=1
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=1
+roughness/src_normal="res://modelos-3d/Hospital1_Poliigon_PlasticMoldWorn_7486_Normal.jpg"
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

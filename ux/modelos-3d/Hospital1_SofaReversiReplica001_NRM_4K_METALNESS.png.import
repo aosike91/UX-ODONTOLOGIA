@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://gw1acmhifhxu"
+path.s3tc="res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "24f43cafa28bfa1d195d03e1b149d751"
+}
+
+[deps]
+
+source_file="res://modelos-3d/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png"
+dest_files=["res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=1
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=1
+roughness/src_normal="res://modelos-3d/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png"
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0
