@@ -1,10 +1,54 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7yvtnipg0t1y"]
+[gd_scene load_steps=8 format=3 uid="uid://c7yvtnipg0t1y"]
 
 [ext_resource type="PackedScene" uid="uid://dj8t6npk2rscx" path="res://xr_origin_3d.tscn" id="1_lkpba"]
+[ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="1_mp8v6"]
+[ext_resource type="PackedScene" uid="uid://bfwv4radsnu0b" path="res://menu.tscn" id="1_tgmy8"]
 [ext_resource type="PackedScene" uid="uid://cnw2q7t326eke" path="res://mapa_principal.tscn" id="2_413jh"]
+[ext_resource type="LightmapGIData" uid="uid://bvnguhgiufnjs" path="res://main_vr.lmbake" id="4_aktq5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0hx3a"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 9.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_rwqiq"]
+material = SubResource("StandardMaterial3D_0hx3a")
 
 [node name="MainVR" type="Node3D"]
 
+[node name="Menu" parent="." instance=ExtResource("1_tgmy8")]
+transform = Transform3D(2.85211, 0, -0.764222, 0, 2.95273, 0, 0.764222, 0, 2.85211, 1.36005, 3.10168, -0.511662)
+
+[node name="XRSimulator" parent="." instance=ExtResource("1_mp8v6")]
+
 [node name="XROrigin3D" parent="." instance=ExtResource("1_lkpba")]
+transform = Transform3D(0.205316, 0, 0.978696, 0, 1, 0, -0.978696, 0, 0.205316, 6.70732, 3.1004, 2.4862)
 
 [node name="MapaPrincipal" parent="." instance=ExtResource("2_413jh")]
+transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, -4.73584, 0, 4.80776)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.444143, 0.632008, -0.635062, -0.196761, 0.760308, 0.619045, 0.874083, -0.14999, 0.46204, -23.3528, 6.96966, -10.6225)
+light_color = Color(0.999996, 0.566805, 0.3275, 1)
+light_energy = 8.568
+light_size = 3.13
+shadow_enabled = true
+spot_range = 331.816
+spot_angle = 53.65
+
+[node name="Luz" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.58799, 0, -0.960352, 0, 1, 0, 8.91487, 0, -0.27879, -3.38182, 15.5862, 0.143572)
+mesh = SubResource("BoxMesh_rwqiq")
+
+[node name="Luz2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.58799, 0, -0.960352, 0, 1, 0, 8.91487, 0, -0.27879, -1.42999, 15.5862, 0.710191)
+mesh = SubResource("BoxMesh_rwqiq")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, -2.5631, 9.85867, -2.67671)
+light_energy = 10.585
+omni_range = 26.6792
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, -4.73584, 0, 4.80776)
+light_data = ExtResource("4_aktq5")

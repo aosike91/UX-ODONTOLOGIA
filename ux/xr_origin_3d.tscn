@@ -1,9 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://dj8t6npk2rscx"]
+[gd_scene load_steps=8 format=3 uid="uid://dj8t6npk2rscx"]
 
+[ext_resource type="Script" path="res://xr_origin_3d.gd" id="1_dvrvh"]
 [ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_nykq2"]
 [ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_rg8ft"]
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="3_qw3kh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4i1w8"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vwu8g"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m2i07"]
+albedo_color = Color(1, 0, 0, 1)
 
 [node name="XROrigin3D" type="XROrigin3D"]
+script = ExtResource("1_dvrvh")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
 
@@ -12,7 +24,18 @@ tracker = &"left_hand"
 
 [node name="LeftHand" parent="izquierdo" instance=ExtResource("1_nykq2")]
 
+[node name="FunctionPointer" parent="izquierdo" instance=ExtResource("3_qw3kh")]
+distance = 300.0
+laser_material = SubResource("StandardMaterial3D_4i1w8")
+laser_hit_material = SubResource("StandardMaterial3D_vwu8g")
+target_material = SubResource("StandardMaterial3D_m2i07")
+
 [node name="derecho" type="XRController3D" parent="."]
 tracker = &"right_hand"
 
 [node name="RightHand" parent="derecho" instance=ExtResource("2_rg8ft")]
+
+[node name="FunctionPointer" parent="derecho" instance=ExtResource("3_qw3kh")]
+distance = 300.0
+laser_material = SubResource("StandardMaterial3D_4i1w8")
+laser_hit_material = SubResource("StandardMaterial3D_4i1w8")
