@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bytyf5e8foysl"
 path.s3tc="res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png-c57ae6d485fd0559aef0419277ebd9a8.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png-c57ae6d485fd0559aef0419277ebd9a8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png"
-dest_files=["res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png-c57ae6d485fd0559aef0419277ebd9a8.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png-c57ae6d485fd0559aef0419277ebd9a8.s3tc.ctex", "res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_Metallic_2K_jpg-Poliigon_PlasticMoldWorn_7486_Roughness_2K_jpg.png-c57ae6d485fd0559aef0419277ebd9a8.etc2.ctex"]
 
 [params]
 

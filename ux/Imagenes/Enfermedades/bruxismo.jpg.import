@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbrnndxijxc8r"
 path.s3tc="res://.godot/imported/bruxismo.jpg-83daef0f072b7cae084fa6e27db77644.s3tc.ctex"
+path.etc2="res://.godot/imported/bruxismo.jpg-83daef0f072b7cae084fa6e27db77644.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Imagenes/Enfermedades/bruxismo.jpg"
-dest_files=["res://.godot/imported/bruxismo.jpg-83daef0f072b7cae084fa6e27db77644.s3tc.ctex"]
+dest_files=["res://.godot/imported/bruxismo.jpg-83daef0f072b7cae084fa6e27db77644.s3tc.ctex", "res://.godot/imported/bruxismo.jpg-83daef0f072b7cae084fa6e27db77644.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtiro7cjo7n7l"
 path.s3tc="res://.godot/imported/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png-5610ab886b096ad30b3eddb81939e56f.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png-5610ab886b096ad30b3eddb81939e56f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png"
-dest_files=["res://.godot/imported/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png-5610ab886b096ad30b3eddb81939e56f.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png-5610ab886b096ad30b3eddb81939e56f.s3tc.ctex", "res://.godot/imported/Hospital1_Poliigon_MetalSteelBrushed_7174_Metallic_2K_jpg-Poliigon_MetalSteelBrushed_7174_Roughness_2K_jpg.png-5610ab886b096ad30b3eddb81939e56f.etc2.ctex"]
 
 [params]
 

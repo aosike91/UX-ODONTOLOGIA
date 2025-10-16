@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://c7yvtnipg0t1y"]
+[gd_scene load_steps=12 format=3 uid="uid://c7yvtnipg0t1y"]
 
 [ext_resource type="PackedScene" uid="uid://dj8t6npk2rscx" path="res://xr_origin_3d.tscn" id="1_lkpba"]
 [ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="1_mp8v6"]
 [ext_resource type="PackedScene" uid="uid://bfwv4radsnu0b" path="res://menu.tscn" id="1_tgmy8"]
 [ext_resource type="PackedScene" uid="uid://cnw2q7t326eke" path="res://mapa_principal.tscn" id="2_413jh"]
 [ext_resource type="LightmapGIData" uid="uid://bvnguhgiufnjs" path="res://main_vr.lmbake" id="4_aktq5"]
+[ext_resource type="Texture2D" uid="uid://bcfck03hmrv2q" path="res://Imagenes/sky_2.png" id="6_sd2c7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0hx3a"]
 emission_enabled = true
@@ -14,10 +15,20 @@ emission_energy_multiplier = 9.65
 [sub_resource type="BoxMesh" id="BoxMesh_rwqiq"]
 material = SubResource("StandardMaterial3D_0hx3a")
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ttfnl"]
+panorama = ExtResource("6_sd2c7")
+
+[sub_resource type="Sky" id="Sky_okjws"]
+sky_material = SubResource("PanoramaSkyMaterial_ttfnl")
+
+[sub_resource type="Environment" id="Environment_sujhq"]
+background_mode = 2
+sky = SubResource("Sky_okjws")
+
 [node name="MainVR" type="Node3D"]
 
 [node name="Menu" parent="." instance=ExtResource("1_tgmy8")]
-transform = Transform3D(2.85211, 0, -0.764222, 0, 2.95273, 0, 0.764222, 0, 2.85211, 1.36005, 3.10168, -0.511662)
+transform = Transform3D(2.4917, 0, -0.629339, 0, 2.56994, 0, 0.629339, 0, 2.4917, 0, 3.44152, 1.15982)
 
 [node name="XRSimulator" parent="." instance=ExtResource("1_mp8v6")]
 
@@ -52,3 +63,6 @@ omni_range = 26.6792
 [node name="LightmapGI" type="LightmapGI" parent="."]
 transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, -4.73584, 0, 4.80776)
 light_data = ExtResource("4_aktq5")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sujhq")

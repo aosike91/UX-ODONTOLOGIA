@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://gw1acmhifhxu"
 path.s3tc="res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png"
-dest_files=["res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.s3tc.ctex", "res://.godot/imported/Hospital1_SofaReversiReplica001_NRM_4K_METALNESS.png-4d79a46ed9064df06ea826774bc58cbb.etc2.ctex"]
 
 [params]
 

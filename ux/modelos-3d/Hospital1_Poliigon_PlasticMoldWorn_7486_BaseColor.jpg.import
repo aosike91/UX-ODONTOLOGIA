@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://8s0seg1icsoy"
 path.s3tc="res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg-39399482a7ac65f1040e5d7f0dd07de2.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg-39399482a7ac65f1040e5d7f0dd07de2.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg"
-dest_files=["res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg-39399482a7ac65f1040e5d7f0dd07de2.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg-39399482a7ac65f1040e5d7f0dd07de2.s3tc.ctex", "res://.godot/imported/Hospital1_Poliigon_PlasticMoldWorn_7486_BaseColor.jpg-39399482a7ac65f1040e5d7f0dd07de2.etc2.ctex"]
 
 [params]
 

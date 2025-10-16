@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyfnfh7p2t7ar"
 path.s3tc="res://.godot/imported/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png-a41a486653d17e86322aa2ea5b328d9a.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png-a41a486653d17e86322aa2ea5b328d9a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png"
-dest_files=["res://.godot/imported/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png-a41a486653d17e86322aa2ea5b328d9a.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png-a41a486653d17e86322aa2ea5b328d9a.s3tc.ctex", "res://.godot/imported/Hospital1_GroundWoodChips001_REFL_2K_jpg-GroundWoodChips001_GLOSS_2K_jpg.png-a41a486653d17e86322aa2ea5b328d9a.etc2.ctex"]
 
 [params]
 

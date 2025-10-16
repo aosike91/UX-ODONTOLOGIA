@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cig2q5is7w361"
 path.s3tc="res://.godot/imported/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png-a2a6c48182072823e4f51a15522f1c7f.s3tc.ctex"
+path.etc2="res://.godot/imported/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png-a2a6c48182072823e4f51a15522f1c7f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://modelos-3d/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png"
-dest_files=["res://.godot/imported/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png-a2a6c48182072823e4f51a15522f1c7f.s3tc.ctex"]
+dest_files=["res://.godot/imported/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png-a2a6c48182072823e4f51a15522f1c7f.s3tc.ctex", "res://.godot/imported/Hospital1_WaterDropletsMixedBubbled001_REFL_2K_jpg-WaterDropletsMixedBubbled001_GLOSS_2K_jpg.png-a2a6c48182072823e4f51a15522f1c7f.etc2.ctex"]
 
 [params]
 

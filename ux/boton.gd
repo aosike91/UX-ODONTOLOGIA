@@ -4,7 +4,7 @@ extends RigidBody3D
 signal button_selected(button_name: String)
 
 @onready var boton : AudioStreamPlayer = $AudioStreamPlayer
-@onready var mesh_instance: MeshInstance3D = $Cube
+@onready var mesh_instance: MeshInstance3D = $Opcion
 
 var escala_original: Vector3
 var material_original: Material
