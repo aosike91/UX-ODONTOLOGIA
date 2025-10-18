@@ -3,7 +3,7 @@ extends Node
 class_name TTSManager
 
 # === Config ===
-var OPENAI_API_KEY: String = "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"   # Para pruebas (no recomendado en prod)
+var OPENAI_API_KEY: String = "apikey no poner el real"   # Para pruebas (no recomendado en prod)
 var OPENAI_TTS_MODEL: String = "tts-1"                # "tts-1-hd" o "gpt-4o-mini-tts"
 var OPENAI_TTS_VOICE: String = "alloy"
 var OPENAI_TTS_FORMAT: String = "wav"                 # "wav" | "mp3" | "opus" | "aac"
