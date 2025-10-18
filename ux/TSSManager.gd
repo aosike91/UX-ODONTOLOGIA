@@ -4,7 +4,7 @@ class_name TTSManager
 
 # === Config ===
 var OPENAI_API_KEY: String = "apikey no poner el real"   # Para pruebas (no recomendado en prod)
-var OPENAI_TTS_MODEL: String = "tts-1"                # "tts-1-hd" o "gpt-4o-mini-tts"
+var OPENAI_TTS_MODEL: String = "tts-1"                # "tts-1-hd" o "gpt-4o-mini-tts" usar tts1 por velocidad
 var OPENAI_TTS_VOICE: String = "alloy"
 var OPENAI_TTS_FORMAT: String = "wav"                 # "wav" | "mp3" | "opus" | "aac"
 var OPENAI_TTS_URL: String = "https://api.openai.com/v1/audio/speech"
