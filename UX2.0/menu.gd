@@ -1,10 +1,11 @@
-# MenuController.gd — Adjuntar al nodo raíz: Menu
 extends Node3D
 
 # ------------------- Referencias (paneles/botones) -------------------
 @onready var cuadros_menu: Node            = $CuadrosMenu
 @onready var cuadros_enfermedades: Node    = $CuadrosEnfermedades
 @onready var enfermedades: Node            = $Enfermedades
+@onready var xr_origin := $XROrigin3D
+var heatmap_vp: Viewport
 
 @onready var back_button: Node             = $RegresarGlobal
 
@@ -42,6 +43,7 @@ var current_state: Dictionary = {}
 
 # ------------------- Ciclo de vida -------------------
 func _ready() -> void:
+	heatmap_vp = xr_origin.heatmap_viewport
 	_render_state({"type": StateType.PANEL, "node": cuadros_menu})
 	_update_back_visibility()
 
@@ -444,3 +446,35 @@ func _play_wav_from_path(path: String) -> void:
 		print("[Narrador] Reproduciendo correctamente:", path)
 	else:
 		push_warning("[Narrador] El recurso cargado no es un AudioStream: " + path)
+func _process_heat(delta):
+	if heatmap_vp:
+		var cam := xr_origin.get_node("XRCamera3D")
+		if cam:
+			var origin = cam.global_position
+			var dir = cam.global_transform.basis.z * -1
+
+			var space_state = get_world_3d().direct_space_state
+			var query = PhysicsRayQueryParameters3D.create(origin, origin + dir * 20.0)
+
+			var result = space_state.intersect_ray(query)
+
+			if result:
+				_draw_heat_point(result.position)
+
+func _draw_heat_point(world_pos: Vector3):
+	var cam := xr_origin.get_node("XRCamera3D")
+	var screen_pos = cam.unproject_position(world_pos)
+
+	var canvas := heatmap_vp.get_texture().get_image()
+	canvas.lock()
+
+	var px = int(screen_pos.x)
+	var py = int(screen_pos.y)
+
+	if px >= 0 and py >= 0 and px < canvas.get_width() and py < canvas.get_height():
+		var prev = canvas.get_pixel(px, py)
+		var new_r = clamp(prev.r + 0.05, 0, 1)
+		canvas.set_pixel(px, py, Color(new_r, 0, 0, 1))
+
+	canvas.unlock()
+	heatmap_vp.get_node("HeatmapTexture").texture = ImageTexture.create_from_image(canvas)
