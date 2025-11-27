@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ciwctcjnhoe8p"
-path="res://.godot/imported/dientes.glb-c8e5e6c33d594c339ff127b303b2d487.scn"
+uid="uid://cppam8vryhkrr"
+path="res://.godot/imported/ojo.glb-4ca13aeff92bd0ac7e4e6ee661eb8148.scn"
 
 [deps]
 
-source_file="res://modelos-3d/dientes.glb"
-dest_files=["res://.godot/imported/dientes.glb-c8e5e6c33d594c339ff127b303b2d487.scn"]
+source_file="res://modelos-3d/ojo.glb"
+dest_files=["res://.godot/imported/ojo.glb-4ca13aeff92bd0ac7e4e6ee661eb8148.scn"]
 
 [params]
 

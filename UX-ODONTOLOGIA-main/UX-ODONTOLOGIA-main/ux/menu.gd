@@ -1,21 +1,46 @@
+# MenuController.gd — Adjuntar al nodo raíz: Menu
 extends Node3D
+
+# ------------------- SEÑALES -------------------
+signal simulacion_iniciada
+signal simulacion_terminada
+signal diagnostico_correcto
+signal diagnostico_incorrecto
 
 # ------------------- Referencias (paneles/botones) -------------------
 @onready var cuadros_menu: Node            = $CuadrosMenu
 @onready var cuadros_enfermedades: Node    = $CuadrosEnfermedades
 @onready var enfermedades: Node            = $Enfermedades
-@onready var xr_origin := $XROrigin3D
-var heatmap_vp: Viewport
 
 @onready var back_button: Node             = $RegresarGlobal
 
-@onready var btn_menu_op1: Node            = $"CuadrosMenu/Opcion1"
-@onready var btn_menu_op2: Node            = $"CuadrosMenu/Opcion2"   # Dientes
+@onready var btn_menu_op1: Node            = $"CuadrosMenu/Opcion1"  # Simulación de Casos
+@onready var btn_menu_op2: Node            = $"CuadrosMenu/Opcion2"  # Dientes
 @onready var btn_menu_op3: Node            = $"CuadrosMenu/Opcion3"
 
 @onready var btn_cuadros_op1: Node         = $"CuadrosEnfermedades/Opcion1"
 @onready var btn_cuadros_op2: Node         = $"CuadrosEnfermedades/Opcion2"
 @onready var btn_cuadros_op3: Node         = $"CuadrosEnfermedades/Opcion3"
+
+# ------------------- Simulación de Casos -------------------
+@onready var simulacion_casos: Node        = $SimulacionCasos
+@onready var btn_sim_op1: Node             = $"SimulacionCasos/Opcion1"  # Caries
+@onready var btn_sim_op2: Node             = $"SimulacionCasos/Opcion2"  # Bruxismo
+@onready var btn_sim_op3: Node             = $"SimulacionCasos/Opcion3"  # Gingivitis
+
+@onready var pacientes: Node3D             = $"SimulacionCasos/Pacientes"
+@onready var paciente_sano: Node3D         = $"SimulacionCasos/Pacientes/PacienteSano"
+@onready var paciente_bruxismo: Node3D     = $"SimulacionCasos/Pacientes/PacienteBruxismo"
+@onready var paciente_caries: Node3D       = $"SimulacionCasos/Pacientes/PacienteCaries"
+@onready var paciente_gingivitis: Node3D   = $"SimulacionCasos/Pacientes/PacienteGingivitis"
+
+@onready var btn_paciente_sano: Node       = $"SimulacionCasos/PacienteSano"
+@onready var btn_regresar_atras: Node      = $"SimulacionCasos/RegresarAtras"
+
+# Variables para la simulación
+var _pacientes_disponibles: Array[Node3D] = []
+var _paciente_actual: Node3D = null
+var _simulacion_activa: bool = false
 
 # ------------------- Opción 2: rama animada + label -------------------
 var diente_parte: Node3D = null
@@ -24,38 +49,42 @@ var label_3d: Label3D = null
 var _tooth_bodies: Array[CollisionObject3D] = []
 
 # ------------------- MODELOS 3D (familias) -------------------
-var modelos_root: Node3D = null                   # p.ej. Dientes/dientes/RigidBody3D
+var modelos_root: Node3D = null
 var mesh_incisivo: MeshInstance3D = null
-var mesh_canino:   MeshInstance3D = null
+var mesh_canino: MeshInstance3D = null
 var mesh_premolar: MeshInstance3D = null
-var mesh_molar:    MeshInstance3D = null
+var mesh_molar: MeshInstance3D = null
 var _rotate_target: Node3D = null
-@export var rotate_speed_deg: float = 45.0        # grados/seg (giro Z infinito)
-
-# ------------------- Audio (reproductor local) -------------------
-@onready var narrador: AudioStreamPlayer = $AudioNarrador
-@onready var TTS: TtsManager = get_node("/root/TtsManager") as TtsManager
+@export var rotate_speed_deg: float = 45.0
 
 # ------------------- Estado / Historial -------------------
-enum StateType { PANEL, ENFER, TEETH }
+enum StateType { PANEL, ENFER, TEETH, SIMULACION, DIAGNOSTICO }
 var history: Array[Dictionary] = []
 var current_state: Dictionary = {}
 
 # ------------------- Ciclo de vida -------------------
 func _ready() -> void:
-	heatmap_vp = xr_origin.heatmap_viewport
 	_render_state({"type": StateType.PANEL, "node": cuadros_menu})
 	_update_back_visibility()
 
-	_connect_button(btn_menu_op1, func(): _navigate_to({"type": StateType.PANEL, "node": cuadros_enfermedades}))
+	# Menú principal
+	_connect_button(btn_menu_op1, func(): _navigate_to({"type": StateType.SIMULACION}))
 	_connect_button(btn_menu_op2, func(): _navigate_to({"type": StateType.TEETH}))
 	_connect_button(btn_menu_op3, func(): _navigate_to({"type": StateType.PANEL, "node": cuadros_enfermedades}))
 
-	_connect_button(btn_cuadros_op1, func(): _navigate_to({"type": StateType.ENFER, "idx": 1}))
-	_connect_button(btn_cuadros_op2, func(): _navigate_to({"type": StateType.ENFER, "idx": 2}))
-	_connect_button(btn_cuadros_op3, func(): _navigate_to({"type": StateType.ENFER, "idx": 3}))
+	# Cuadros enfermedades
+	_connect_button(btn_cuadros_op1, func(): _navigate_to({"type": StateType. ENFER, "idx": 1}))
+	_connect_button(btn_cuadros_op2, func(): _navigate_to({"type": StateType. ENFER, "idx": 2}))
+	_connect_button(btn_cuadros_op3, func(): _navigate_to({"type": StateType. ENFER, "idx": 3}))
 
 	_connect_button(back_button, _go_back)
+
+	# Simulación de casos - botones de diagnóstico
+	_connect_button(btn_sim_op1, func(): _verificar_diagnostico("caries"))
+	_connect_button(btn_sim_op2, func(): _verificar_diagnostico("bruxismo"))
+	_connect_button(btn_sim_op3, func(): _verificar_diagnostico("gingivitis"))
+	_connect_button(btn_paciente_sano, func(): _verificar_diagnostico("sano"))
+	_connect_button(btn_regresar_atras, _salir_simulacion)
 
 	_init_teeth_refs()
 	_init_models_refs()
@@ -63,19 +92,18 @@ func _ready() -> void:
 	_hide_all_family_meshes()
 	_rotate_target = null
 
-	# Señal del TTS (cuando termina de generar/guardar)
-	if TTS and not TTS.is_connected("tts_finished", Callable(self, "_on_tts_ready")):
-		TTS.tts_finished.connect(_on_tts_ready)
+	# Ocultar simulación completa al inicio
+	if simulacion_casos:
+		_set_branch_enabled(simulacion_casos, false)
 
 func _process(delta: float) -> void:
-	# Giro infinito en eje Z del mesh visible de la familia seleccionada
 	if _rotate_target != null:
 		_rotate_target.rotate_z(deg_to_rad(rotate_speed_deg) * delta)
 
 # ------------------- Navegación con pila -------------------
 func _navigate_to(new_state: Dictionary) -> void:
 	if current_state.size() > 0:
-		history.push_back(current_state.duplicate(true))
+		history.push_back(current_state. duplicate(true))
 	_render_state(new_state)
 	_update_back_visibility()
 
@@ -90,6 +118,7 @@ func _go_back() -> void:
 func _render_state(state: Dictionary) -> void:
 	_set_branch_enabled(cuadros_menu, false)
 	_set_branch_enabled(cuadros_enfermedades, false)
+	_set_branch_enabled(simulacion_casos, false)
 
 	enfermedades.process_mode = Node.PROCESS_MODE_DISABLED
 	if enfermedades is Node3D:
@@ -107,31 +136,40 @@ func _render_state(state: Dictionary) -> void:
 	_hide_all_family_meshes()
 	_rotate_target = null
 
-	match state.get("type"):
-		StateType.PANEL:
+	match state. get("type"):
+		StateType. PANEL:
+			_simulacion_activa = false
 			var panel: Node = state.get("node", null)
 			if panel:
 				_set_branch_enabled(panel, true)
 
 		StateType.ENFER:
+			_simulacion_activa = false
 			var idx: int = state.get("idx", 0)
 			enfermedades.process_mode = Node.PROCESS_MODE_INHERIT
 			if enfermedades is Node3D:
-				(enfermedades as Node3D).visible = true
+				(enfermedades as Node3D). visible = true
 			var sel_path: String = "Opcion%d" % idx
 			if enfermedades.has_node(sel_path):
-				_set_branch_enabled(enfermedades.get_node(sel_path), true)
+				_set_branch_enabled(enfermedades. get_node(sel_path), true)
 
-		StateType.TEETH:
+		StateType. TEETH:
+			_simulacion_activa = false
 			if not _ensure_teeth_exist():
 				return
 			await _show_teeth_sequence()
+
+		StateType.SIMULACION:
+			_iniciar_simulacion()
+
+		StateType.DIAGNOSTICO:
+			pass
 
 	current_state = state
 
 # ------------------- Utilitarios de interfaz -------------------
 func _update_back_visibility() -> void:
-	var show: bool = history.size() > 0
+	var show: bool = history.size() > 0 and not _simulacion_activa
 	_set_branch_enabled(back_button, show)
 
 func _set_branch_enabled(node: Node, enabled: bool) -> void:
@@ -141,7 +179,7 @@ func _set_branch_enabled(node: Node, enabled: bool) -> void:
 	if node is Node3D:
 		(node as Node3D).visible = enabled
 	if node is CollisionObject3D:
-		(node as CollisionObject3D).set_deferred("disabled", not enabled)
+		(node as CollisionObject3D). set_deferred("disabled", not enabled)
 	for c in node.get_children():
 		_set_branch_enabled(c, enabled)
 
@@ -149,12 +187,150 @@ func _connect_button(btn: Node, callback: Callable) -> void:
 	if btn == null:
 		return
 	if btn.has_signal("button_selected"):
-		btn.button_selected.connect(func(_n): callback.call())
+		btn.button_selected.connect(func(_n): callback. call())
 	elif btn.has_signal("input_event"):
 		btn.input_event.connect(func(_cam, event, _pos, _normal, _shape_idx):
 			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 				callback.call()
 		)
+
+# =================================================================
+#                      SIMULACIÓN DE CASOS
+# =================================================================
+func _iniciar_simulacion() -> void:
+	_simulacion_activa = true
+	
+	# Emitir señal para mover cámara
+	simulacion_iniciada.emit()
+	
+	# Ocultar menú principal y botón regresar global
+	_set_branch_enabled(cuadros_menu, false)
+	_set_branch_enabled(back_button, false)
+	
+	# Mostrar panel de simulación (botones de diagnóstico)
+	_set_branch_enabled(simulacion_casos, true)
+	
+	# Ocultar TODOS los pacientes primero
+	_hide_all_pacientes()
+	
+	# Reiniciar lista de pacientes disponibles
+	_pacientes_disponibles. clear()
+	if paciente_sano:
+		_pacientes_disponibles.append(paciente_sano)
+	if paciente_bruxismo:
+		_pacientes_disponibles.append(paciente_bruxismo)
+	if paciente_caries:
+		_pacientes_disponibles.append(paciente_caries)
+	if paciente_gingivitis:
+		_pacientes_disponibles.append(paciente_gingivitis)
+	
+	print("[Simulación] Pacientes disponibles: ", _pacientes_disponibles.size())
+	
+	# Verificar que hay pacientes
+	if _pacientes_disponibles.is_empty():
+		push_warning("[Simulación] No hay pacientes disponibles!")
+		_salir_simulacion()
+		return
+	
+	# Mezclar aleatoriamente
+	_pacientes_disponibles.shuffle()
+	
+	# Mostrar SOLO el primer paciente aleatorio
+	_mostrar_siguiente_paciente()
+
+func _hide_all_pacientes() -> void:
+	# Ocultar todos los pacientes - ninguno visible
+	if paciente_sano:
+		_set_branch_enabled(paciente_sano, false)
+	if paciente_bruxismo:
+		_set_branch_enabled(paciente_bruxismo, false)
+	if paciente_caries:
+		_set_branch_enabled(paciente_caries, false)
+	if paciente_gingivitis:
+		_set_branch_enabled(paciente_gingivitis, false)
+
+func _mostrar_siguiente_paciente() -> void:
+	# Ocultar paciente actual si existe (el anterior desaparece)
+	if _paciente_actual != null:
+		_set_branch_enabled(_paciente_actual, false)
+		_paciente_actual = null
+	
+	# Verificar si quedan pacientes
+	if _pacientes_disponibles.is_empty():
+		print("[Simulación] ¡Todos los pacientes han sido diagnosticados!")
+		_finalizar_simulacion()
+		return
+	
+	# Obtener siguiente paciente de la lista
+	_paciente_actual = _pacientes_disponibles.pop_front()
+	
+	# Validar que no sea null
+	if _paciente_actual == null:
+		push_warning("[Simulación] Paciente obtenido es null, intentando siguiente...")
+		_mostrar_siguiente_paciente()
+		return
+	
+	# Mostrar SOLO este paciente
+	_set_branch_enabled(_paciente_actual, true)
+	print("[Simulación] Mostrando paciente: ", _paciente_actual.name)
+
+func _verificar_diagnostico(diagnostico: String) -> void:
+	if not _simulacion_activa:
+		return
+	
+	if _paciente_actual == null:
+		push_warning("[Simulación] No hay paciente actual para diagnosticar")
+		return
+	
+	var enfermedad_real := _obtener_enfermedad_paciente(_paciente_actual)
+	
+	if diagnostico == enfermedad_real:
+		print("[Simulación] ¡Diagnóstico CORRECTO!  Era: ", enfermedad_real)
+		diagnostico_correcto.emit()  # Señal verde
+		# Pasar al siguiente paciente (el actual desaparece)
+		_mostrar_siguiente_paciente()
+	else:
+		print("[Simulación] Diagnóstico INCORRECTO.  Seleccionaste: ", diagnostico, " pero era: ", enfermedad_real)
+		diagnostico_incorrecto.emit()  # Señal rojo
+		# El paciente sigue visible para reintentar
+
+func _obtener_enfermedad_paciente(paciente: Node3D) -> String:
+	if paciente == null:
+		return ""
+	
+	var nombre := paciente.name. to_lower()
+	if nombre.find("sano") != -1:
+		return "sano"
+	elif nombre.find("bruxismo") != -1:
+		return "bruxismo"
+	elif nombre.find("caries") != -1:
+		return "caries"
+	elif nombre.find("gingivitis") != -1:
+		return "gingivitis"
+	return ""
+
+func _finalizar_simulacion() -> void:
+	print("[Simulación] Simulación completada exitosamente.")
+	_salir_simulacion()
+
+func _salir_simulacion() -> void:
+	_simulacion_activa = false
+	_paciente_actual = null
+	_pacientes_disponibles.clear()
+	
+	# Emitir señal para volver cámara
+	simulacion_terminada.emit()
+	
+	# Ocultar todos los pacientes
+	_hide_all_pacientes()
+	
+	# Ocultar simulación completa
+	_set_branch_enabled(simulacion_casos, false)
+	
+	# Limpiar historial y volver al menú principal
+	history.clear()
+	_render_state({"type": StateType.PANEL, "node": cuadros_menu})
+	_update_back_visibility()
 
 # =================================================================
 #                      Dientes (rama + modelos)
@@ -180,7 +356,7 @@ func _ensure_teeth_exist() -> bool:
 	return true
 
 func _setup_teeth_branch() -> void:
-	_tooth_bodies.clear()
+	_tooth_bodies. clear()
 	if diente_parte:
 		_set_branch_enabled(diente_parte, false)
 	if label_3d:
@@ -200,11 +376,11 @@ func _collect_collision_objects_recursive(n: Node) -> void:
 
 func _connect_tooth_selection(body: CollisionObject3D) -> void:
 	var callable := func():
-		_on_tooth_selected(body.name)
+		_on_tooth_selected(body. name)
 	if body.has_signal("button_selected"):
 		body.button_selected.connect(func(_n): callable.call())
 	elif body.has_signal("input_event"):
-		body.input_event.connect(func(_cam, event, _pos, _normal, _shape_idx):
+		body. input_event.connect(func(_cam, event, _pos, _normal, _shape_idx):
 			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 				callable.call()
 		)
@@ -237,26 +413,18 @@ func _show_teeth_sequence() -> void:
 		push_warning("[Menu] Falta AnimationPlayer o 'ArmatureAction_004'")
 	_enable_teeth_layers()
 
-# ------------------- Texto + FAMILIA (mesh + giro infinito Z) + TTS -------------------
+# ------------------- Texto + FAMILIA (mesh + giro infinito Z) -------------------
 func _on_tooth_selected(tooth_name: String) -> void:
-	# Label (4 párrafos)
 	var title := _formal_tooth_title(tooth_name)
-	var body := _tooth_text_for(tooth_name)  # 3 párrafos
-	var paragraphs := [ "Nombre del diente: %s" % title ]
+	var body := _tooth_text_for(tooth_name)
+	var paragraphs := ["Nombre del diente: %s" % title]
 	paragraphs.append_array(body)
 	if label_3d:
-		label_3d.text = "\n\n".join(paragraphs)
+		label_3d.text = "\n\n". join(paragraphs)
 		label_3d.visible = true
 
-	# Familia → muestra mesh y fija objetivo de giro en Z
 	var fam := _family_from_tooth_name(tooth_name)
 	_show_family_mesh(fam)
-
-	# TTS (audio del texto) — genera/guarda y luego emitirá la ruta
-	var full_text: String = "Nombre del diente: %s.\n%s\n%s\n%s" % [title, body[0], body[1], body[2]]
-	TTS.speak_text(full_text, "tts_%s" % tooth_name.to_lower(), {
-		"model":"tts-1","voice":"alloy","format":"wav"
-	})
 
 func _formal_tooth_title(raw: String) -> String:
 	var lower := raw.to_lower()
@@ -266,21 +434,21 @@ func _formal_tooth_title(raw: String) -> String:
 	if side_digit == "1" or side_digit == "2":
 		base = lower.substr(0, lower.length() - 1)
 	base = base.replace("incisivocentralsuperior", "Incisivo central superior")
-	base = base.replace("incisivolateralsuperior", "Incisivo lateral superior")
+	base = base. replace("incisivolateralsuperior", "Incisivo lateral superior")
 	base = base.replace("caninosuperior", "Canino superior")
 	base = base.replace("primerpremolarsuperior", "Primer premolar superior")
 	base = base.replace("segundopremolarsuperior", "Segundo premolar superior")
 	base = base.replace("primermolarsuperior", "Primer molar superior")
 	base = base.replace("segundomolarsuperior", "Segundo molar superior")
-	base = base.replace("incisivocentralinferior", "Incisivo central inferior")
+	base = base. replace("incisivocentralinferior", "Incisivo central inferior")
 	base = base.replace("incisivolateralinferior", "Incisivo lateral inferior")
 	base = base.replace("caninoinferior", "Canino inferior")
 	base = base.replace("primerpremolarinferior", "Primer premolar inferior")
 	base = base.replace("segundopremolarinferior", "Segundo premolar inferior")
-	base = base.replace("primermolarinferior", "Primer molar inferior")
+	base = base. replace("primermolarinferior", "Primer molar inferior")
 	base = base.replace("segundomolarinferior", "Segundo molar inferior")
 	if base.length() > 0:
-		base = base[0].to_upper() + base.substr(1, base.length() - 1)
+		base = base[0]. to_upper() + base.substr(1, base.length() - 1)
 	return "%s %s" % [base, lado]
 
 func _tooth_text_for(raw: String) -> PackedStringArray:
@@ -374,7 +542,7 @@ func _init_models_refs() -> void:
 		if modelos_root == null:
 			modelos_root = find_child("RigidBody3D", true, false) as Node3D
 	if modelos_root:
-		mesh_incisivo = modelos_root.get_node_or_null("Incisivo") as MeshInstance3D
+		mesh_incisivo = modelos_root. get_node_or_null("Incisivo") as MeshInstance3D
 		if mesh_incisivo == null:
 			mesh_incisivo = modelos_root.find_child("Incisivo", true, false) as MeshInstance3D
 		mesh_canino = modelos_root.get_node_or_null("Canino") as MeshInstance3D
@@ -389,17 +557,17 @@ func _init_models_refs() -> void:
 
 func _hide_all_family_meshes() -> void:
 	if mesh_incisivo: mesh_incisivo.visible = false
-	if mesh_canino:   mesh_canino.visible   = false
+	if mesh_canino: mesh_canino.visible = false
 	if mesh_premolar: mesh_premolar.visible = false
-	if mesh_molar:    mesh_molar.visible    = false
+	if mesh_molar: mesh_molar.visible = false
 
 func _show_family_mesh(kind: String) -> void:
 	_hide_all_family_meshes()
 	_rotate_target = null
-	match kind.to_lower():
+	match kind. to_lower():
 		"incisivo":
 			if mesh_incisivo:
-				mesh_incisivo.visible = true
+				mesh_incisivo. visible = true
 				_rotate_target = mesh_incisivo
 		"canino":
 			if mesh_canino:
@@ -418,63 +586,8 @@ func _show_family_mesh(kind: String) -> void:
 
 func _family_from_tooth_name(raw: String) -> String:
 	var s := raw.to_lower()
-	if s.find("canino") != -1:   return "canino"
+	if s.find("canino") != -1: return "canino"
 	if s.find("incisivo") != -1: return "incisivo"
 	if s.find("premolar") != -1: return "premolar"
-	if s.find("molar") != -1:    return "molar"
+	if s.find("molar") != -1: return "molar"
 	return ""
-
-# ---------- Reproducción del WAV (local) ----------
-func _on_tts_ready(path: String) -> void:
-	_play_wav_from_path(path)
-
-func _play_wav_from_path(path: String) -> void:
-	if not FileAccess.file_exists(path):
-		push_warning("[Narrador] No existe el archivo: " + path)
-		return
-
-	# Usa ResourceLoader para que Godot decodifique el WAV (PCM) correctamente
-	var res := ResourceLoader.load(path)
-	if res == null:
-		push_warning("[Narrador] No se pudo cargar el archivo de audio: " + path)
-		return
-
-	if res is AudioStream:
-		narrador.stop()
-		narrador.stream = res
-		narrador.play()
-		print("[Narrador] Reproduciendo correctamente:", path)
-	else:
-		push_warning("[Narrador] El recurso cargado no es un AudioStream: " + path)
-func _process_heat(delta):
-	if heatmap_vp:
-		var cam := xr_origin.get_node("XRCamera3D")
-		if cam:
-			var origin = cam.global_position
-			var dir = cam.global_transform.basis.z * -1
-
-			var space_state = get_world_3d().direct_space_state
-			var query = PhysicsRayQueryParameters3D.create(origin, origin + dir * 20.0)
-
-			var result = space_state.intersect_ray(query)
-
-			if result:
-				_draw_heat_point(result.position)
-
-func _draw_heat_point(world_pos: Vector3):
-	var cam := xr_origin.get_node("XRCamera3D")
-	var screen_pos = cam.unproject_position(world_pos)
-
-	var canvas := heatmap_vp.get_texture().get_image()
-	canvas.lock()
-
-	var px = int(screen_pos.x)
-	var py = int(screen_pos.y)
-
-	if px >= 0 and py >= 0 and px < canvas.get_width() and py < canvas.get_height():
-		var prev = canvas.get_pixel(px, py)
-		var new_r = clamp(prev.r + 0.05, 0, 1)
-		canvas.set_pixel(px, py, Color(new_r, 0, 0, 1))
-
-	canvas.unlock()
-	heatmap_vp.get_node("HeatmapTexture").texture = ImageTexture.create_from_image(canvas)

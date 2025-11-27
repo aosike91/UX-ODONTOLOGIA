@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dj8t6npk2rscx"]
+[gd_scene load_steps=10 format=3 uid="uid://dj8t6npk2rscx"]
 
 [ext_resource type="Script" path="res://xr_origin_3d.gd" id="1_dvrvh"]
 [ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_nykq2"]
 [ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_rg8ft"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="3_qw3kh"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="4_53vxa"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_qp5rj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4i1w8"]
 albedo_color = Color(1, 0, 0, 1)
@@ -30,6 +32,8 @@ laser_material = SubResource("StandardMaterial3D_4i1w8")
 laser_hit_material = SubResource("StandardMaterial3D_vwu8g")
 target_material = SubResource("StandardMaterial3D_m2i07")
 
+[node name="MovementDirect" parent="izquierdo" instance=ExtResource("4_53vxa")]
+
 [node name="derecho" type="XRController3D" parent="."]
 tracker = &"right_hand"
 
@@ -39,3 +43,7 @@ tracker = &"right_hand"
 distance = 300.0
 laser_material = SubResource("StandardMaterial3D_4i1w8")
 laser_hit_material = SubResource("StandardMaterial3D_4i1w8")
+
+[node name="PlayerBody" parent="." instance=ExtResource("6_qp5rj")]
+player_height_min = 10.29
+player_height_max = 11.67

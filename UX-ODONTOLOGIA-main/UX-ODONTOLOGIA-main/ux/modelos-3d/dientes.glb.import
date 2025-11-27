@@ -3,13 +3,12 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cne7nb8kdd6qq"
-path="res://.godot/imported/cuadroboton.glb-5d5a36cd7a30b0ff3b2ead2a07351593.scn"
+uid="uid://ciwctcjnhoe8p"
+valid=false
 
 [deps]
 
-source_file="res://modelos-3d/cuadroboton.glb"
-dest_files=["res://.godot/imported/cuadroboton.glb-5d5a36cd7a30b0ff3b2ead2a07351593.scn"]
+source_file="res://modelos-3d/dientes.glb"
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://di5005jtyklp6"
-path="res://.godot/imported/bocaydientes.glb-dbbeedf9f3285d7d139addb8d4abb58b.scn"
+uid="uid://flg0n0kn6ktj"
+path="res://.godot/imported/Paciente.glb-65bd8dcf700de4121c0ac9a4d01bf1c5.scn"
 
 [deps]
 
-source_file="res://modelos-3d/bocaydientes.glb"
-dest_files=["res://.godot/imported/bocaydientes.glb-dbbeedf9f3285d7d139addb8d4abb58b.scn"]
+source_file="res://modelos-3d/Paciente.glb"
+dest_files=["res://.godot/imported/Paciente.glb-65bd8dcf700de4121c0ac9a4d01bf1c5.scn"]
 
 [params]
 
