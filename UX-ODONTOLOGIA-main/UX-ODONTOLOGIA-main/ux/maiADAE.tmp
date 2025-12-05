@@ -48,6 +48,7 @@ transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, 
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(0.444143, 0.632008, -0.635062, -0.196761, 0.760308, 0.619045, 0.874083, -0.14999, 0.46204, -23.3528, 6.96966, -10.6225)
+visible = false
 light_color = Color(0.999996, 0.566805, 0.3275, 1)
 light_energy = 8.568
 light_size = 3.13
@@ -57,14 +58,17 @@ spot_angle = 53.65
 
 [node name="Luz" type="MeshInstance3D" parent="."]
 transform = Transform3D(-2.58799, 0, -0.960352, 0, 1, 0, 8.91487, 0, -0.27879, -3.38182, 15.5862, 0.143572)
+visible = false
 mesh = SubResource("BoxMesh_rwqiq")
 
 [node name="Luz2" type="MeshInstance3D" parent="."]
 transform = Transform3D(-2.58799, 0, -0.960352, 0, 1, 0, 8.91487, 0, -0.27879, -1.42999, 15.5862, 0.710191)
+visible = false
 mesh = SubResource("BoxMesh_rwqiq")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(-0.27879, 0, -0.960352, 0, 1, 0, 0.960352, 0, -0.27879, -2.5631, 9.85867, -2.67671)
+visible = false
 light_energy = 10.585
 omni_range = 26.6792
 

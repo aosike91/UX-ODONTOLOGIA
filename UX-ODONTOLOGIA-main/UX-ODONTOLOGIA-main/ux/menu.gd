@@ -46,6 +46,7 @@ var _simulacion_activa: bool = false
 var diente_parte: Node3D = null
 var dientes_anim: AnimationPlayer = null
 var label_3d: Label3D = null
+var label_preview: Label3D = null  # ✨ NUEVO
 var _tooth_bodies: Array[CollisionObject3D] = []
 
 # ------------------- MODELOS 3D (familias) -------------------
@@ -103,7 +104,7 @@ func _process(delta: float) -> void:
 # ------------------- Navegación con pila -------------------
 func _navigate_to(new_state: Dictionary) -> void:
 	if current_state.size() > 0:
-		history.push_back(current_state. duplicate(true))
+		history.push_back(current_state.duplicate(true))
 	_render_state(new_state)
 	_update_back_visibility()
 
@@ -120,7 +121,7 @@ func _render_state(state: Dictionary) -> void:
 	_set_branch_enabled(cuadros_enfermedades, false)
 	_set_branch_enabled(simulacion_casos, false)
 
-	enfermedades.process_mode = Node.PROCESS_MODE_DISABLED
+	enfermedades. process_mode = Node.PROCESS_MODE_DISABLED
 	if enfermedades is Node3D:
 		(enfermedades as Node3D).visible = false
 	for child in enfermedades.get_children():
@@ -130,6 +131,7 @@ func _render_state(state: Dictionary) -> void:
 	_init_teeth_refs()
 	_init_models_refs()
 	_hide_label()
+	_hide_tooth_preview()  # ✨ NUEVO
 	_disable_teeth_layers()
 	if diente_parte:
 		_set_branch_enabled(diente_parte, false)
@@ -137,7 +139,7 @@ func _render_state(state: Dictionary) -> void:
 	_rotate_target = null
 
 	match state. get("type"):
-		StateType. PANEL:
+		StateType.PANEL:
 			_simulacion_activa = false
 			var panel: Node = state.get("node", null)
 			if panel:
@@ -148,7 +150,7 @@ func _render_state(state: Dictionary) -> void:
 			var idx: int = state.get("idx", 0)
 			enfermedades.process_mode = Node.PROCESS_MODE_INHERIT
 			if enfermedades is Node3D:
-				(enfermedades as Node3D). visible = true
+				(enfermedades as Node3D).visible = true
 			var sel_path: String = "Opcion%d" % idx
 			if enfermedades.has_node(sel_path):
 				_set_branch_enabled(enfermedades. get_node(sel_path), true)
@@ -218,7 +220,7 @@ func _iniciar_simulacion() -> void:
 	if paciente_sano:
 		_pacientes_disponibles.append(paciente_sano)
 	if paciente_bruxismo:
-		_pacientes_disponibles.append(paciente_bruxismo)
+		_pacientes_disponibles. append(paciente_bruxismo)
 	if paciente_caries:
 		_pacientes_disponibles.append(paciente_caries)
 	if paciente_gingivitis:
@@ -285,7 +287,7 @@ func _verificar_diagnostico(diagnostico: String) -> void:
 	var enfermedad_real := _obtener_enfermedad_paciente(_paciente_actual)
 	
 	if diagnostico == enfermedad_real:
-		print("[Simulación] ¡Diagnóstico CORRECTO!  Era: ", enfermedad_real)
+		print("[Simulación] ¡Diagnóstico CORRECTO! Era: ", enfermedad_real)
 		diagnostico_correcto.emit()  # Señal verde
 		# Pasar al siguiente paciente (el actual desaparece)
 		_mostrar_siguiente_paciente()
@@ -340,10 +342,26 @@ func _init_teeth_refs() -> void:
 		diente_parte = get_node_or_null("DienteParte1")
 		if diente_parte == null:
 			diente_parte = find_child("DienteParte1", true, false) as Node3D
+	
 	if label_3d == null:
 		label_3d = get_node_or_null("Label3D")
 		if label_3d == null:
 			label_3d = find_child("Label3D", true, false) as Label3D
+	
+	# ✨ NUEVO: Inicializar LabelPreview
+	if label_preview == null:
+		label_preview = get_node_or_null("LabelPreview") as Label3D
+		if label_preview == null:
+			label_preview = find_child("LabelPreview", true, false) as Label3D
+		if label_preview == null:
+			push_warning("[Menu] No se encontró 'LabelPreview'")
+	
+	# Ocultar preview al inicio
+	if label_preview:
+		label_preview.visible = false
+		label_preview.text = ""
+		print("✅ LabelPreview encontrado y configurado")
+	
 	if diente_parte:
 		dientes_anim = diente_parte.get_node_or_null("AnimationPlayer") as AnimationPlayer
 	else:
@@ -415,12 +433,15 @@ func _show_teeth_sequence() -> void:
 
 # ------------------- Texto + FAMILIA (mesh + giro infinito Z) -------------------
 func _on_tooth_selected(tooth_name: String) -> void:
+	# ✨ Ocultar preview porque ahora se muestra información completa
+	hide_tooth_name_preview()
+	
 	var title := _formal_tooth_title(tooth_name)
 	var body := _tooth_text_for(tooth_name)
 	var paragraphs := ["Nombre del diente: %s" % title]
 	paragraphs.append_array(body)
 	if label_3d:
-		label_3d.text = "\n\n". join(paragraphs)
+		label_3d.text = "\n\n".join(paragraphs)
 		label_3d.visible = true
 
 	var fam := _family_from_tooth_name(tooth_name)
@@ -444,11 +465,11 @@ func _formal_tooth_title(raw: String) -> String:
 	base = base.replace("incisivolateralinferior", "Incisivo lateral inferior")
 	base = base.replace("caninoinferior", "Canino inferior")
 	base = base.replace("primerpremolarinferior", "Primer premolar inferior")
-	base = base.replace("segundopremolarinferior", "Segundo premolar inferior")
-	base = base. replace("primermolarinferior", "Primer molar inferior")
+	base = base. replace("segundopremolarinferior", "Segundo premolar inferior")
+	base = base.replace("primermolarinferior", "Primer molar inferior")
 	base = base.replace("segundomolarinferior", "Segundo molar inferior")
 	if base.length() > 0:
-		base = base[0]. to_upper() + base.substr(1, base.length() - 1)
+		base = base[0].to_upper() + base. substr(1, base.length() - 1)
 	return "%s %s" % [base, lado]
 
 func _tooth_text_for(raw: String) -> PackedStringArray:
@@ -542,7 +563,7 @@ func _init_models_refs() -> void:
 		if modelos_root == null:
 			modelos_root = find_child("RigidBody3D", true, false) as Node3D
 	if modelos_root:
-		mesh_incisivo = modelos_root. get_node_or_null("Incisivo") as MeshInstance3D
+		mesh_incisivo = modelos_root.get_node_or_null("Incisivo") as MeshInstance3D
 		if mesh_incisivo == null:
 			mesh_incisivo = modelos_root.find_child("Incisivo", true, false) as MeshInstance3D
 		mesh_canino = modelos_root.get_node_or_null("Canino") as MeshInstance3D
@@ -591,3 +612,25 @@ func _family_from_tooth_name(raw: String) -> String:
 	if s.find("premolar") != -1: return "premolar"
 	if s.find("molar") != -1: return "molar"
 	return ""
+
+# =================================================================
+#                      PREVIEW DE NOMBRES
+# =================================================================
+func show_tooth_name_preview(tooth_name: String) -> void:
+	if not label_preview:
+		push_warning("[Preview] LabelPreview no disponible")
+		return
+	
+	var title := _formal_tooth_title(tooth_name)
+	label_preview.text = title
+	label_preview.visible = true
+	print("[Preview] Mostrando: ", title)
+
+func hide_tooth_name_preview() -> void:
+	if label_preview:
+		label_preview.visible = false
+		label_preview.text = ""
+
+func _hide_tooth_preview() -> void:
+	# Función privada para uso interno
+	hide_tooth_name_preview()

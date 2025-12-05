@@ -10,16 +10,17 @@ var material_original: Material
 var material_hover: StandardMaterial3D
 var esta_hover: bool = false
 var game_controller: Node3D
+var menu_controller: Node3D = null  # ✨ NUEVO
 var is_enabled: bool = true
 
-@export var color_borde: Color = Color.YELLOW
+@export var color_borde: Color = Color. YELLOW
 @export var intensidad_brillo: float = 0.3
 @export var button_name: String = ""
 
 func _ready():
 	# Configurar nombre del botón
 	if button_name == "":
-		button_name = name.to_lower()
+		button_name = name. to_lower()
 	
 	# Buscar y conectar con el controlador del juego
 	setup_game_controller()
@@ -46,19 +47,30 @@ func find_game_controller() -> Node3D:
 	while current_node != null:
 		if has_game_controller_methods(current_node):
 			return current_node
-		current_node = current_node.get_parent()
+		# ✨ NUEVO: Buscar también menu_controller
+		if has_menu_controller_methods(current_node):
+			menu_controller = current_node
+		current_node = current_node. get_parent()
 	
 	# Buscar en los hijos del nodo raíz
 	var root_children = get_tree().root.get_children()
 	for child in root_children:
 		if has_game_controller_methods(child):
 			return child
+		# ✨ NUEVO
+		if has_menu_controller_methods(child):
+			menu_controller = child
 			
 	return null
 
 func has_game_controller_methods(node: Node) -> bool:
-	return (node.has_method("is_menu_available") and 
+	return (node. has_method("is_menu_available") and 
 			node.has_method("_on_button_selected"))
+
+# ✨ NUEVO
+func has_menu_controller_methods(node: Node) -> bool:
+	return (node.has_method("show_tooth_name_preview") and 
+			node.has_method("hide_tooth_name_preview"))
 
 func configurar_efectos_hover():
 	if not mesh_instance:
@@ -74,7 +86,7 @@ func configurar_efectos_hover():
 func get_current_material() -> Material:
 	var material = mesh_instance.get_surface_override_material(0)
 	if not material and mesh_instance.mesh:
-		material = mesh_instance.mesh.surface_get_material(0)
+		material = mesh_instance. mesh.surface_get_material(0)
 	return material
 
 func crear_material_hover():
@@ -97,14 +109,14 @@ func copy_material_properties(original: StandardMaterial3D):
 	material_hover.normal_texture = original.normal_texture
 
 func set_default_material_properties():
-	material_hover.albedo_color = Color.WHITE
+	material_hover.albedo_color = Color. WHITE
 	material_hover.metallic = 0.1
 	material_hover.roughness = 0.3
 
 func apply_hover_effects():
 	# Efectos de borde y emisión
 	material_hover.rim_enabled = true
-	material_hover.rim_color = color_borde
+	material_hover. rim_color = color_borde
 	material_hover.rim_tint = 1.0
 	
 	material_hover.emission_enabled = true
@@ -112,7 +124,7 @@ func apply_hover_effects():
 	material_hover.emission_energy = intensidad_brillo
 	
 	# Iluminar un poco el color base
-	material_hover.albedo_color = material_hover.albedo_color.lightened(0.15)
+	material_hover.albedo_color = material_hover.albedo_color. lightened(0.15)
 
 func is_button_enabled() -> bool:
 	if not game_controller:
@@ -120,10 +132,10 @@ func is_button_enabled() -> bool:
 	
 	if button_name == "regresar":
 		if game_controller.has_method("is_return_button_available"):
-			return game_controller.is_return_button_available()
+			return game_controller. is_return_button_available()
 		return false
 	else:
-		if game_controller.has_method("is_menu_available"):
+		if game_controller. has_method("is_menu_available"):
 			return game_controller.is_menu_available()
 		return true
 
@@ -149,9 +161,9 @@ func pointer_event(event: XRToolsPointerEvent) -> void:
 	match event.event_type:
 		XRToolsPointerEvent.Type.ENTERED:
 			handle_pointer_entered()
-		XRToolsPointerEvent.Type.EXITED:
+		XRToolsPointerEvent.Type. EXITED:
 			handle_pointer_exited()
-		XRToolsPointerEvent.Type.PRESSED:
+		XRToolsPointerEvent.Type. PRESSED:
 			handle_pointer_pressed()
 		XRToolsPointerEvent.Type.RELEASED:
 			handle_pointer_released()
@@ -160,10 +172,18 @@ func handle_pointer_entered():
 	print("🎯 Puntero entró en botón: ", button_name)
 	if is_button_enabled():
 		activar_hover()
+		
+		# ✨ NUEVO: Mostrar preview del nombre del diente
+		if menu_controller and menu_controller.has_method("show_tooth_name_preview"):
+			menu_controller.show_tooth_name_preview(button_name)
 
 func handle_pointer_exited():
 	print("🎯 Puntero salió del botón: ", button_name)
 	desactivar_hover()
+	
+	# ✨ NUEVO: Ocultar preview del nombre del diente
+	if menu_controller and menu_controller. has_method("hide_tooth_name_preview"):
+		menu_controller.hide_tooth_name_preview()
 
 func handle_pointer_pressed():
 	if not is_button_enabled():
@@ -171,6 +191,10 @@ func handle_pointer_pressed():
 		return
 		
 	print("🎯 Botón presionado: ", button_name)
+	
+	# ✨ NUEVO: Ocultar preview porque se seleccionó el diente
+	if menu_controller and menu_controller.has_method("hide_tooth_name_preview"):
+		menu_controller.hide_tooth_name_preview()
 	
 	# Efecto visual de presión
 	play_press_effect()
@@ -233,7 +257,7 @@ func play_press_effect():
 	if material_hover:
 		var material_temp = material_hover.duplicate() as StandardMaterial3D
 		material_temp.emission_energy = intensidad_brillo * 2.0
-		material_temp.emission_color = Color.CYAN
+		material_temp.emission_color = Color. CYAN
 		
 		# Aplicar material temporal
 		mesh_instance.set_surface_override_material(0, material_temp)

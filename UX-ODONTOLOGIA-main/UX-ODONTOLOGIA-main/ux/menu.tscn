@@ -1835,9 +1835,11 @@ script = ExtResource("1_87vru")
 
 [node name="DienteParte1" parent="." instance=ExtResource("2_t2gi6")]
 transform = Transform3D(0.143342, 0, 1.35313, 0, 1.3607, 0, -1.35313, 0, 0.143342, 0.738676, -0.31157, -0.16082)
+visible = false
 
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(0.298833, 0, 0.545872, 0, 0.838383, 0, -0.331085, 0, 0.492697, 2.2387, 0.133534, -2.03366)
+visible = false
 text = "Incisivo central superior derecho:
  Diente frontal principal, 
 con borde cortante. 
@@ -1847,6 +1849,7 @@ font_size = 37
 
 [node name="Dientes" type="Node3D" parent="."]
 transform = Transform3D(0.0641958, 0, 0.760983, 0, 0.763682, 0, -0.760983, 0, 0.0641958, 1.18514, 0.227768, -0.25958)
+visible = false
 
 [node name="dientes" type="Node3D" parent="Dientes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.37063, 0, 2.24772)
@@ -1880,6 +1883,7 @@ transform = Transform3D(1, 7.45058e-09, 4.44089e-16, -7.45058e-09, 1, -5.2458e-1
 shape = SubResource("SphereShape3D_t5iql")
 
 [node name="CuadrosMenu" type="Node3D" parent="."]
+visible = false
 
 [node name="Opcion1" type="RigidBody3D" parent="CuadrosMenu"]
 collision_layer = 5242881
@@ -1939,6 +1943,7 @@ transform = Transform3D(-0.0585439, 0, 0, 0, 4.37114e-08, 1, 0, -1, 4.37114e-08,
 shape = SubResource("ConvexPolygonShape3D_ntulc")
 
 [node name="CuadrosEnfermedades" type="Node3D" parent="."]
+visible = false
 
 [node name="Opcion1" type="RigidBody3D" parent="CuadrosEnfermedades"]
 collision_layer = 5242881
@@ -2001,6 +2006,7 @@ shape = SubResource("ConvexPolygonShape3D_ntulc")
 
 [node name="Enfermedades" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57849, 0, 0)
+visible = false
 
 [node name="Opcion3" type="RigidBody3D" parent="Enfermedades"]
 collision_layer = 5242881
@@ -2107,6 +2113,7 @@ Huecos o cavidades visibles
 Mal aliento ocasional"
 
 [node name="RegresarGlobal" type="RigidBody3D" parent="."]
+visible = false
 collision_layer = 5242881
 gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
@@ -4166,7 +4173,7 @@ gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
 
 [node name="Opcion" type="MeshInstance3D" parent="SimulacionCasos/Opcion1"]
-transform = Transform3D(0.0141978, 0.526997, -0.019856, 0.00132875, 0.0114048, 0.579904, -0.0308458, 0.243059, 0.0158412, 2.10648, 2.0247, -4.07549)
+transform = Transform3D(0.0466464, 1.73143, -0.0652362, 0.00436556, 0.0374701, 1.90525, -0.101343, 0.798562, 0.0520457, 6.06905, 4.49733, -11.7222)
 mesh = SubResource("ArrayMesh_1iuq2")
 skeleton = NodePath("")
 
@@ -4177,7 +4184,7 @@ text = "Caries
 font_size = 40
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SimulacionCasos/Opcion1"]
-transform = Transform3D(0.0141978, 0.526997, -0.019856, 0.00132875, 0.0114048, 0.579904, -0.0308458, 0.243059, 0.0158412, 2.10648, 2.0247, -4.07549)
+transform = Transform3D(0.0466464, 1.73143, -0.0652362, 0.00436556, 0.0374701, 1.90525, -0.101343, 0.798562, 0.0520457, 6.06905, 4.49733, -11.7222)
 shape = SubResource("ConvexPolygonShape3D_85qur")
 
 [node name="Opcion2" type="RigidBody3D" parent="SimulacionCasos"]
@@ -4186,7 +4193,7 @@ gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
 
 [node name="Opcion" type="MeshInstance3D" parent="SimulacionCasos/Opcion2"]
-transform = Transform3D(-0.0203306, -0.46512, -5.54652e-09, 6.5165e-18, 6.92193e-09, -0.58046, -0.02723, 0.347271, 4.14117e-09, -1.36434, 2.0247, -3.78733)
+transform = Transform3D(-0.0667955, -1.52814, -1.82229e-08, 2.14097e-17, 2.27418e-08, -1.90708, -0.0894632, 1.14095, 1.36057e-08, -5.33421, 4.49733, -10.7755)
 mesh = SubResource("ArrayMesh_07oyi")
 skeleton = NodePath("")
 
@@ -4197,7 +4204,7 @@ text = "Bruxismo
 font_size = 40
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SimulacionCasos/Opcion2"]
-transform = Transform3D(-0.0203306, -0.46512, -5.54652e-09, 6.5165e-18, 6.92193e-09, -0.58046, -0.02723, 0.347271, 4.14117e-09, -1.36434, 2.0247, -3.78733)
+transform = Transform3D(-0.0667955, -1.52814, -1.82229e-08, 2.14097e-17, 2.27418e-08, -1.90708, -0.0894632, 1.14095, 1.36057e-08, -5.33421, 4.49733, -10.7755)
 shape = SubResource("ConvexPolygonShape3D_yqmo5")
 
 [node name="Opcion3" type="RigidBody3D" parent="SimulacionCasos"]
@@ -4206,7 +4213,7 @@ gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
 
 [node name="Opcion" type="MeshInstance3D" parent="SimulacionCasos/Opcion3"]
-transform = Transform3D(-0.00281166, 0.57847, -2.52857e-08, 0, 2.53727e-08, 0.58046, -0.0338659, -0.0480265, 2.0993e-09, 0.344965, 2.0247, -4.24583)
+transform = Transform3D(-0.00923761, 1.90054, -8.30753e-08, 0, 8.33611e-08, 1.90708, -0.111265, -0.157789, 6.89717e-09, 0.281651, 4.49733, -12.2819)
 mesh = SubResource("ArrayMesh_s2gm7")
 skeleton = NodePath("")
 
@@ -4216,7 +4223,7 @@ text = "Gingivitis"
 font_size = 40
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SimulacionCasos/Opcion3"]
-transform = Transform3D(-0.00281166, 0.57847, -2.52857e-08, 0, 2.53727e-08, 0.58046, -0.0338659, -0.0480265, 2.0993e-09, 0.344965, 2.0247, -4.24583)
+transform = Transform3D(-0.00923761, 1.90054, -8.30753e-08, 0, 8.33611e-08, 1.90708, -0.111265, -0.157789, 6.89717e-09, 0.281651, 4.49733, -12.2819)
 shape = SubResource("ConvexPolygonShape3D_ntulc")
 
 [node name="RegresarAtras" type="RigidBody3D" parent="SimulacionCasos"]
@@ -4225,15 +4232,15 @@ gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
 
 [node name="Opcion" type="MeshInstance3D" parent="SimulacionCasos/RegresarAtras"]
-transform = Transform3D(-0.000152766, 0, -1.95978, 0, 0.437459, 0, 0.515784, 0, -0.000582705, 0.380859, 3.90498, -4.16258)
+transform = Transform3D(-0.000501907, 0, -6.43879, 0, 1.43726, 0, 1.69459, 0, -0.00191446, 0.39958, 10.6749, -12.0084)
 mesh = SubResource("BoxMesh_of1tc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SimulacionCasos/RegresarAtras"]
-transform = Transform3D(-0.000152766, 0, -1.95978, 0, 0.437459, 0, 0.515784, 0, -0.000582705, 0.380859, 3.90498, -4.16258)
+transform = Transform3D(-0.000501907, 0, -6.43879, 0, 1.43726, 0, 1.69459, 0, -0.00191446, 0.39958, 10.6749, -12.0084)
 shape = SubResource("ConvexPolygonShape3D_oycmu")
 
 [node name="Label3D" type="Label3D" parent="SimulacionCasos/RegresarAtras"]
-transform = Transform3D(0.830046, 0, -0.000246108, 0, 0.830046, 0, 0.000246108, 0, 0.830046, 0.387183, 3.9112, -3.89097)
+transform = Transform3D(2.72709, 0, -0.000808579, 0, 2.72709, 0, 0.000808579, 0, 2.72709, 0.420357, 10.6954, -11.116)
 text = "Regresar al menú anterior"
 
 [node name="PacienteSano" type="RigidBody3D" parent="SimulacionCasos"]
@@ -4242,13 +4249,19 @@ gravity_scale = 0.0
 script = ExtResource("1_y2tyi")
 
 [node name="Opcion" type="MeshInstance3D" parent="SimulacionCasos/PacienteSano"]
-transform = Transform3D(-0.000152747, 0, -1.11712, 0, 0.437459, 0, 0.515718, 0, -0.000332155, 0.380859, 3.14121, -4.16258)
+transform = Transform3D(-0.000501845, 0, -3.67026, 0, 1.43726, 0, 1.69437, 0, -0.00109128, 0.39958, 8.16558, -12.0084)
 mesh = SubResource("BoxMesh_o5kyg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SimulacionCasos/PacienteSano"]
-transform = Transform3D(-0.000152747, 0, -1.11712, 0, 0.437459, 0, 0.515718, 0, -0.000332155, 0.380859, 3.14121, -4.16258)
+transform = Transform3D(-0.000501845, 0, -3.67026, 0, 1.43726, 0, 1.69437, 0, -0.00109128, 0.39958, 8.16558, -12.0084)
 shape = SubResource("ConvexPolygonShape3D_4kvkr")
 
 [node name="Label3D" type="Label3D" parent="SimulacionCasos/PacienteSano"]
-transform = Transform3D(0.830046, 0, -0.000246108, 0, 0.830046, 0, 0.000246108, 0, 0.830046, 0.387183, 3.14743, -3.89097)
+transform = Transform3D(2.72709, 0, -0.000808579, 0, 2.72709, 0, 0.000808579, 0, 2.72709, 0.420357, 8.18602, -11.116)
 text = "Paciente Sano"
+
+[node name="LabelPreview" type="Label3D" parent="."]
+transform = Transform3D(-3.51926e-08, 0, 0.805112, 0, 0.805112, 0, -0.805112, 0, -3.51926e-08, 1.76988, 0.848255, -0.0849189)
+visible = false
+text = "HOLA
+"
